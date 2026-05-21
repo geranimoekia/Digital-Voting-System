@@ -1,0 +1,802 @@
+\documentclass[12pt, a4paper]{article}
+
+% Packages
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{parskip}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% Code listing style
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeblue}{rgb}{0.13,0.13,1}
+\definecolor{codegreen}{rgb}{0,0.5,0}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{cstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=single,
+    rulecolor=\color{black!30}
+}
+
+\lstset{style=cstyle}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{CTEN 415 -- Digital Voting System}
+\lhead{BIUST}
+\cfoot{\thepage}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\begin{document}
+
+%--------------------------------------------------------------
+% TITLE PAGE
+%--------------------------------------------------------------
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\LARGE\bfseries BOTSWANA INTERNATIONAL UNIVERSITY\\OF SCIENCE \& TECHNOLOGY\par}
+    \vspace{1.5cm}
+    \rule{\linewidth}{0.5pt}\\[0.4cm]
+    {\large\bfseries MODULE NAME:\quad MICROCONTROLLERS\par}
+    {\large\bfseries MODULE CODE:\quad CTEN 415\par}
+    \rule{\linewidth}{0.5pt}\\[1cm]
+
+    {\large DEPARTMENT: Electrical, Computer and Telecommunications Engineering\par}
+    \vspace{0.5cm}
+    {\large MODULE INSTRUCTOR: JWAONE GABABOITAOLELWE\par}
+    \vspace{1cm}
+    {\LARGE\bfseries TITLE: DIGITAL VOTING SYSTEM\par}
+    \vspace{1.5cm}
+
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{FULL NAME} & \textbf{STUDENT ID} & \textbf{COURSE} \\
+        \hline
+        TSOTLHE SEIPHEPI & 21001137 & BEng Computer and Telecommunications \\
+        \hline
+        KGOTSO MATHANGWANE & 21000459 & BEng Electrical and Electronics \\
+        \hline
+    \end{tabular}
+
+    \vfill
+    {\large Botswana International University of Science and Technology\\
+    Palapye, Botswana\par}
+    \vspace{0.5cm}
+    {\large November 2024\par}
+\end{titlepage}
+
+%--------------------------------------------------------------
+% TABLE OF CONTENTS
+%--------------------------------------------------------------
+\tableofcontents
+\newpage
+
+%--------------------------------------------------------------
+% INTRODUCTION
+%--------------------------------------------------------------
+\section{Introduction}
+
+This report details the design and implementation of a digital voting system using a PIC16F877A
+microcontroller. The system is designed to provide a user-friendly and secure platform for casting
+votes, with a 16$\times$2 LCD to display candidate information and a 4$\times$4 matrix keypad allowing voters
+to input their choices.
+
+%--------------------------------------------------------------
+% THEORY
+%--------------------------------------------------------------
+\section{Theory}
+
+\subsection{Microcontrollers}
+
+A microcontroller (MCU) is a compact computer on a single integrated circuit, designed to control
+specific tasks within electronic systems. It integrates a CPU, memory, and input/output
+interfaces on one chip. Microcontrollers are widely used in embedded systems, such as home
+appliances, automotive systems, medical devices, and consumer electronics \cite{geeksforgeeks}.
+
+A typical microcontroller includes a processor core (for executing instructions), volatile and
+non-volatile memory (for data and program storage), and I/O peripherals (for interacting with the
+external environment). They also support various communication interfaces.
+
+Microcontrollers are programmable, allowing them to be customized for specific tasks. Common
+programming languages include C, C++, and assembly language. Designed for low-power operation,
+they are ideal for battery-operated devices and are embedded in a wide range of products, from
+consumer electronics to industrial equipment \cite{geeksforgeeks}.
+
+\subsubsection{Working of a Microcontroller}
+
+The microcontroller chip is a high-speed device, yet it is slow when compared to a computer. As a
+result, each command will be executed quickly within the microcontroller. The quartz oscillator is
+enabled through the control logic register once the supply is powered on. Parasite capacitors will
+be recharged for a few seconds while early preparation is taking place. Once the voltage level
+reaches its maximum value and the oscillator's frequency stabilises, the operation of writing bits
+through special function registers becomes stable. Everything is controlled by the oscillator's CLK,
+and the whole electronics will begin to function. All of this happens in a matter of nanoseconds \cite{geeksforgeeks}.
+
+\subsubsection{Microcontroller Properties}
+
+\begin{itemize}
+    \item Microcontroller devices are capable of having words longer than 64 bits.
+    \item Microcontrollers consist of RAM, ROM, Timer, and I/O Ports.
+    \item Microcontroller ROM is used for program storage and RAM is used for data storage.
+    \item It is designed using CISC architecture.
+    \item The power consumption of modern microcontrollers is significantly lower with an
+          operating voltage range from 1.8\,V to 5.5\,V.
+    \item The latest feature of a microcontroller is flash memory such as EPROM and EEPROM \cite{geeksforgeeks}.
+\end{itemize}
+
+\subsection{PIC16F877A Microcontroller}
+
+\subsubsection{Architecture}
+
+The PIC16F877A is based on the Harvard architecture. This architecture separates the memory
+space for program instructions and data, allowing for efficient and simultaneous access to both,
+which enhances performance.
+
+\subsubsection{Key Components}
+
+\begin{itemize}
+    \item \textbf{CPU:} The central processing unit executes instructions and controls the flow of data.
+    \item \textbf{Memory:} Includes both program memory (Flash) and data memory (RAM).
+    \item \textbf{I/O Ports:} Allow the microcontroller to interact with external devices.
+    \item \textbf{Timers:} Used for timing events and generating specific time delays.
+    \item \textbf{Analog-to-Digital Converter (ADC):} Converts analog signals into digital values.
+    \item \textbf{Serial Communication Modules:} Support UART, SPI, and I\textsuperscript{2}C protocols.
+    \item \textbf{Interrupt System:} Enables the microcontroller to respond to external events efficiently.
+\end{itemize}
+
+The PIC16F877A contains 368 bytes of RAM and 256 bytes of EEPROM for non-volatile storage.
+It provides 33 I/O pins configurable for digital/analogue input, PWM output, or serial
+communication \cite{microchip}.
+
+\subsubsection{I/O Port Descriptions}
+
+\begin{itemize}
+    \item \textbf{Port A:} 7-bit wide; used as input or output depending on the TRISA register.
+    \item \textbf{Port B:} 8-bit port usable as input or output; four bits respond to interrupt signals in input mode.
+    \item \textbf{Port C:} 8-bit port; direction determined by the TRISC register.
+    \item \textbf{Port D:} 8-bit port that acts as a slave port for microprocessor connection; all pins have Schmitt Trigger buffers in I/O mode.
+    \item \textbf{Port E:} 3-bit port used for control signals to the A/D converter.
+\end{itemize}
+
+\subsubsection{Supported Communication Protocols}
+
+\begin{itemize}
+    \item \textbf{UART} (Universal Asynchronous Receiver-Transmitter): Serial communication with other devices.
+    \item \textbf{SPI} (Serial Peripheral Interface): High-speed communication with sensors, displays, and memory chips.
+    \item \textbf{I\textsuperscript{2}C} (Inter-Integrated Circuit): Low-speed communication with multiple devices on a single bus.
+\end{itemize}
+
+\subsection{LCD 16$\times$2 Module}
+
+The Liquid Crystal Display (LCD) is a passive device that does not emit light itself. The 16$\times$2
+LCD uses a parallel interface requiring multiple pins to transmit data and control signals. Some
+variants offer an I\textsuperscript{2}C interface that reduces pin count \cite{raystar}.
+
+\subsubsection{Key Pins}
+
+\begin{enumerate}
+    \item \textbf{RS (Register Select):} Selects whether data is an instruction or character data.
+    \item \textbf{EN (Enable):} Enables or disables the LCD module.
+    \item \textbf{D4--D7 (Data Pins):} Carry data bits for commands and characters.
+    \item \textbf{Backlight Pins (optional):} Control the backlight.
+\end{enumerate}
+
+The LCD operates using two registers:
+\begin{itemize}
+    \item \textbf{Command Register:} Stores instructions to control LCD behaviour (clear screen, cursor positioning, initialisation).
+    \item \textbf{Data Register:} Stores ASCII codes of characters to be displayed.
+\end{itemize}
+
+\subsubsection{LCD Control and Data Lines}
+
+\paragraph{Control Lines (3 total):}
+\begin{itemize}
+    \item \textbf{EN (Enable):} Set LOW $\rightarrow$ prepare RS/RW/data $\rightarrow$ set HIGH $\rightarrow$ set LOW.
+    \item \textbf{RS (Register Select):} LOW = command; HIGH = character data.
+    \item \textbf{RW (Read/Write):} LOW = write to LCD; HIGH = read from LCD.
+\end{itemize}
+
+\paragraph{Data Bus:}
+\begin{itemize}
+    \item 4-bit mode: 7 lines (3 control + 4 data).
+    \item 8-bit mode: 11 lines (3 control + 8 data).
+\end{itemize}
+
+\subsection{4$\times$4 Matrix Keypad}
+
+A 4$\times$4 keypad is a matrix-based input device consisting of 16 buttons arranged in 4 rows and
+4 columns. The 4$\times$4 keypad has $4 + 4 = 8$ pins \cite{elektronicavoorjou, lastminuteengineers}.
+
+\subsubsection{Keypad Scanning}
+
+\begin{enumerate}
+    \item Each row is connected to an input pin; each column is connected to an output pin.
+    \item Input pins are pulled HIGH by enabling internal pull-up resistors.
+    \item The microcontroller sequentially sets each column pin LOW and checks the row pins.
+    \item If a row pin is LOW, the button at that row/column intersection is pressed.
+    \item The microcontroller waits for release, then looks up the character in the keymap array.
+\end{enumerate}
+
+%--------------------------------------------------------------
+% OBJECTIVES
+%--------------------------------------------------------------
+\section{Objectives}
+
+\begin{itemize}
+    \item Develop a digital voting system that enables voters to select candidates using a 4$\times$4 keypad.
+    \item Implement a clear and user-friendly interface on an LCD display.
+    \item Ensure accurate and secure vote recording using microcontroller-based logic.
+    \item Utilise LED indicators to provide visual feedback on voting status.
+    \item Incorporate appropriate security measures to protect sensitive information.
+\end{itemize}
+
+%--------------------------------------------------------------
+% METHODOLOGY
+%--------------------------------------------------------------
+\section{Methodology}
+
+\subsection{Materials and Software}
+
+\begin{itemize}
+    \item Notepad++ (text editor)
+    \item MPLAB X IDE (development environment)
+    \item Proteus (circuit simulation software)
+    \item PIC16F877A microcontroller
+    \item 20$\times$4 LCD display
+    \item 4$\times$4 Matrix Keypad
+    \item Resistors (220\,$\Omega$, 10\,k$\Omega$, 47\,k$\Omega$)
+    \item 8\,MHz crystal oscillator
+    \item 2 $\times$ 22\,pF non-polarised capacitors
+    \item 5\,V power source
+\end{itemize}
+
+\subsection{Procedure}
+
+\subsubsection{Creating a Project in MPLAB X}
+
+\begin{enumerate}
+    \item Open MPLAB X IDE and create a new project.
+    \item Select category \textit{Microchip Embedded} and project type \textit{Standalone Project}.
+    \item Select device \textbf{PIC16F877A}; under Tools select \textit{Simulator}.
+    \item Select compiler \textbf{XC8}.
+    \item Provide a project name and folder; set as the main project.
+    \item Click \textit{Finish}.
+\end{enumerate}
+
+\subsubsection{C Coding Setup}
+
+\begin{enumerate}
+    \item Right-click \textit{Header Files} $\rightarrow$ New $\rightarrow$ \texttt{xc8\_header.h}; rename to \texttt{lcd.h}.
+    \item Paste the LCD driver code (see Appendix~\ref{app:lcd}).
+    \item Right-click \textit{Source Files} $\rightarrow$ New $\rightarrow$ \texttt{main.c}.
+    \item Navigate to \textit{Production} $\rightarrow$ \textit{Set Configuration Bits}:
+          set FOSC to \textbf{HS} (external crystal); disable all watchdog/protection bits.
+    \item Click \textit{Generate Source Code to Output}.
+    \item Define LCD and keypad pin mappings:
+\end{enumerate}
+
+\begin{lstlisting}[language=C, caption={Pin definitions}]
+#define RS  RD2
+#define EN  RD3
+#define D4  RD4
+#define D5  RD5
+#define D6  RD6
+#define D7  RD7
+
+#define R1  RB4
+#define R2  RB5
+#define R3  RB6
+#define R4  RB7
+
+#define C1  RB2
+#define C2  RB1
+#define C3  RB0
+\end{lstlisting}
+
+\begin{enumerate}[resume]
+    \item Keep \texttt{\#include <xc.h>} and define the crystal frequency:
+          \texttt{\#define \_XTAL\_FREQ 8000000}
+    \item Build the project (\textit{Clean and Build}). This produces the \texttt{.hex} file.
+\end{enumerate}
+
+\subsubsection{Setting Up the Proteus Simulation}
+
+\begin{enumerate}
+    \item Create a new project in Proteus; choose a DEFAULT schematic template.
+    \item Do not create a PCB layout; select \textit{No Firmware Project}.
+    \item Place the PIC16F877A, LCD, keypad, crystal circuit, and LED components.
+    \item Load the compiled \texttt{.hex} file into the PIC16F877A.
+    \item Run the simulation to verify functionality.
+\end{enumerate}
+
+\subsection{Key Design Concepts}
+
+\begin{itemize}
+    \item \textbf{Oscillator mode HS:} Required because an external 8\,MHz crystal is used.
+    \item \textbf{Pull-down resistors on keypad pins:} 47\,k$\Omega$ resistors were added to all keypad
+          pin-outs to prevent noise and signal bouncing. Without these, the microcontroller could
+          register false key presses, leading to incorrect characters on the LCD.
+    \item \textbf{Debouncing:} Implemented via pull-down resistors and software delays
+          (\texttt{\_\_delay\_ms(200)}) to handle mechanical key-press bouncing.
+\end{itemize}
+
+%--------------------------------------------------------------
+% PSEUDO CODE
+%--------------------------------------------------------------
+\section{System Design}
+
+\subsection{Pseudo-code}
+
+\begin{lstlisting}[language={},caption={Pseudo-code for Digital Voting System}]
+Start
+    Blink LED
+    Display "Welcome Message"
+
+    Enter PIN Code
+    Input PIN
+    Check PIN
+        If INVALID PIN
+            Display "INVALID PIN"
+            Go to Enter PIN Code
+        Else
+            Display "Welcome Message"
+            Display Candidates
+            Button Press
+            Prompt for Vote
+            Enter Vote
+            Record Vote
+            Turn on Confirmation LED
+            Display "Thanks for Voting"
+            Display Vote Count
+
+    Press 1 to Restart Voting
+End
+\end{lstlisting}
+
+%--------------------------------------------------------------
+% RESULTS AND ANALYSIS
+%--------------------------------------------------------------
+\section{Results and Analysis}
+
+\subsection{Initial Power-Up}
+
+Upon connecting the PIC16F877A to a power source, the \textbf{RED LED} blinks 3 times to
+indicate system start-up. The LCD displays \textit{``Enter PIN Code''} and the RED LED remains
+on for the duration of system operation.
+
+\subsection{Invalid PIN Entry}
+
+When an incorrect PIN is entered, the LCD displays \textit{``INVALID PIN''} and prompts the
+user to re-enter their PIN. The voting process does not proceed until a valid PIN is provided.
+
+\subsection{Valid PIN Entry}
+
+Upon successful PIN entry, the system displays \textit{``WELCOME''} briefly, then shows all
+election candidates:
+
+\begin{center}
+    \texttt{A: KGOTSO \quad B: NIMO}\\
+    \texttt{C: EKIA \quad\quad D: LOU}
+\end{center}
+
+\subsection{Vote Input}
+
+The LCD prompts \textit{``Vote: / A--D to select''}. The voter presses the key corresponding
+to their preferred candidate (A, B, C, or D).
+
+\subsection{Vote Confirmation}
+
+After a candidate is selected, the LCD displays \textit{``Vote: [X] / \# to confirm''}. Pressing
+\texttt{\#} confirms and records the vote. The \textbf{GREEN LED} blinks to acknowledge a
+successful vote, and the LCD displays \textit{``Thanks for Vote!''}.
+
+\subsection{Displaying Vote Statistics}
+
+Pressing \texttt{*} prompts a PIN entry screen. Upon entering the correct administrator PIN, the
+vote tally is displayed:
+
+\begin{center}
+    \texttt{A:n \quad B:n \quad C:n \quad D:n}
+\end{center}
+
+An invalid PIN at this stage returns \textit{``Invalid PIN''} and exits.
+
+%--------------------------------------------------------------
+% DISCUSSION
+%--------------------------------------------------------------
+\section{Discussion}
+
+The digital voting system was successfully implemented both in simulation (Proteus) and on
+physical breadboard hardware. All outlined requirements were met, demonstrating reliability and
+user-friendliness. Voters could select candidates by pressing the corresponding letter on the
+4$\times$4 keypad, and the LCD interface was clear and easy to navigate. The green LED provided
+immediate visual confirmation of a recorded vote.
+
+Security was a primary concern. An administrator PIN is required at system start-up and again
+before vote tallies are displayed, ensuring that sensitive data is accessible only to authorised
+personnel.
+
+\subsection{Challenges and Solutions}
+
+The microcontroller, operating at 8\,MHz, was prone to noise interference. Prolonged power
+supply caused some port pins to charge, resulting in false keypad readings. This was addressed by
+grounding all keypad pin-outs through 47\,k$\Omega$ pull-down resistors rather than just the row
+pins, which is the standard practice. This non-standard approach significantly reduced noise and
+ensured accurate key detection.
+
+\subsection{Recommended Future Improvements}
+
+\begin{itemize}
+    \item Add decoupling capacitors near the microcontroller's power-supply pins for further noise filtering.
+    \item Implement software-based debouncing for more robust input detection.
+    \item Incorporate EEPROM-based non-volatile memory to preserve vote data across power cycles.
+    \item Add redundant data storage as an additional security layer.
+\end{itemize}
+
+%--------------------------------------------------------------
+% CONCLUSION
+%--------------------------------------------------------------
+\section{Conclusion}
+
+The successful implementation of the digital voting system demonstrates its potential as a
+reliable and user-friendly solution for secure electronic voting. By integrating a 4$\times$4 keypad
+for candidate selection, an LCD for a clear interface, and a green LED for vote confirmation, the
+system provides a seamless voting experience. Administrator PIN protection ensures the integrity
+and confidentiality of voting results.
+
+Despite initial challenges with noise interference, grounding all keypad pin-outs through
+47\,k$\Omega$ resistors proved effective. These solutions highlight the robustness and
+adaptability of the design.
+
+The project lays a strong foundation for future advancements in secure digital voting technologies,
+with clear pathways for hardware hardening, software debouncing, and persistent storage
+integration.
+
+%--------------------------------------------------------------
+% REFERENCES
+%--------------------------------------------------------------
+\begin{thebibliography}{9}
+
+\bibitem{geeksforgeeks}
+``Microcontroller and its Types,'' \textit{GeeksforGeeks}. [Online].
+Available: \url{https://www.geeksforgeeks.org/microcontroller-and-its-types/}.
+[Accessed: Nov. 15, 2024].
+
+\bibitem{educba}
+``Microcontroller Architecture,'' \textit{EDUCBA}. [Online].
+Available: \url{https://www.educba.com/microcontroller-architecture/}.
+[Accessed: Nov. 15, 2024].
+
+\bibitem{microchip}
+Microchip Technology Inc., ``PIC16F87XA Data Sheet: 28/40/44-Pin Enhanced Flash
+Microcontrollers,'' DS39582E datasheet, 2013. [Online].
+Available: \url{https://ww1.microchip.com/downloads/en/devicedoc/39582e.pdf}.
+
+\bibitem{raystar}
+Raystar Optronics, ``16$\times$4 Character LCD Display Module.'' [Online].
+Available: \url{https://www.raystar-optronics.com/character-lcd-display-module/lcd-16x4.html}.
+[Accessed: Nov. 1, 2024].
+
+\bibitem{elektronicavoorjou}
+Elektronica Voor Jou, ``4$\times$4 Matrix Keypad -- Zwart.'' [Online].
+Available: \url{https://elektronicavoorjou.nl/en/product/4x4-matrix-keypad-zwart/}.
+[Accessed: Nov. 10, 2024].
+
+\bibitem{lastminuteengineers}
+Last Minute Engineers, ``A Beginner's Guide to Keypad Module for Arduino,''
+\textit{Last Minute Engineers}. [Online].
+Available: \url{https://lastminuteengineers.com/arduino-keypad-tutorial/}.
+[Accessed: Nov. 10, 2024].
+
+\bibitem{mathangwane}
+K. Mathangwane, ``Keypad Control System for Microcontroller Project,''
+Unpublished Lab Work, Botswana International University of Science and Technology,
+Botswana, Nov. 2024.
+
+\bibitem{seiphepi}
+T. Seiphepi, ``Keypad Control System for Microcontroller Project,''
+Unpublished Lab Work, Botswana International University of Science and Technology,
+Botswana, Nov. 2024.
+
+\end{thebibliography}
+
+%--------------------------------------------------------------
+% APPENDIX
+%--------------------------------------------------------------
+\appendix
+
+\section{LCD Header File (\texttt{lcd.h})}
+\label{app:lcd}
+
+\begin{lstlisting}[language=C, caption={lcd.h -- LCD driver for PIC16F877A}]
+#ifndef XC_HEADER_TEMPLATE_H
+#define XC_HEADER_TEMPLATE_H
+
+#include <xc.h>
+
+void Lcd_Port(char a) {
+    D4 = (a & 1) ? 1 : 0;
+    D5 = (a & 2) ? 1 : 0;
+    D6 = (a & 4) ? 1 : 0;
+    D7 = (a & 8) ? 1 : 0;
+}
+
+void Lcd_Cmd(char a) {
+    RS = 0;
+    Lcd_Port(a);
+    EN = 1;
+    EN = 0;
+}
+
+void Lcd_Clear()         { Lcd_Cmd(0); Lcd_Cmd(1); }
+
+void Lcd_Set_Cursor(char a, char b) {
+    char temp, z, y;
+    if (a == 1) { temp = 0x80 + b - 1; }
+    else        { temp = 0xC0 + b - 1; }
+    z = temp >> 4;  y = temp & 0x0F;
+    Lcd_Cmd(z);  Lcd_Cmd(y);
+}
+
+void Lcd_Init() {
+    Lcd_Port(0x00);
+    Lcd_Cmd(0x03); Lcd_Cmd(0x03); Lcd_Cmd(0x03);
+    Lcd_Cmd(0x02); Lcd_Cmd(0x02); Lcd_Cmd(0x08);
+    Lcd_Cmd(0x00); Lcd_Cmd(0x0C); Lcd_Cmd(0x00);
+    Lcd_Cmd(0x06);
+}
+
+void Lcd_Write_Char(char a) {
+    char temp = a & 0x0F, y = a & 0xF0;
+    RS = 1;
+    Lcd_Port(y >> 4); EN = 1; EN = 0;
+    Lcd_Port(temp);   EN = 1; EN = 0;
+}
+
+void Lcd_Write_String(char *a) {
+    for (int i = 0; a[i] != '\0'; i++) Lcd_Write_Char(a[i]);
+}
+
+void Lcd_Shift_Right() { Lcd_Cmd(0x01); Lcd_Cmd(0x0C); }
+void Lcd_Shift_Left()  { Lcd_Cmd(0x01); Lcd_Cmd(0x08); }
+
+#endif /* XC_HEADER_TEMPLATE_H */
+\end{lstlisting}
+
+\section{Main Source File (\texttt{D\_VOTING SYSTEM.c})}
+\label{app:main}
+
+\begin{lstlisting}[language=C, caption={Main source code for the Digital Voting System}]
+#define _XTAL_FREQ 8000000
+
+// PIC16F877A Configuration Bit Settings
+#pragma config FOSC  = HS   // High-Speed crystal oscillator
+#pragma config WDTE  = OFF  // Watchdog Timer disabled
+#pragma config PWRTE = OFF  // Power-up Timer disabled
+#pragma config CP    = OFF  // Code Protection off
+#pragma config BOREN = OFF  // Brown-out Reset disabled
+#pragma config LVP   = OFF  // Low Voltage ICSP disabled
+#pragma config CPD   = OFF  // Data EE Memory Code Protection off
+#pragma config WRT   = OFF  // Flash Write Protection off
+
+// LCD Pin Mapping
+#define RS RD2
+#define EN RD3
+#define D4 RD4
+#define D5 RD5
+#define D6 RD6
+#define D7 RD7
+
+#include <xc.h>
+#include "lcd.h"
+#include <stdio.h>
+#include <string.h>
+
+int ttlVotesOf_A = 0;
+int ttlVotesOf_B = 0;
+int ttlVotesOf_C = 0;
+int ttlVotesOf_D = 0;
+
+char votes[16];
+char selectedCandidate = '\0';
+
+const char correctPin[5] = {'8', '0', '0', '8', '5'};
+char enteredPin[5];
+int  pinIndex = 0;
+
+char read_keypad() {
+    for (int row = 0; row < 4; row++) {
+        PORTB = (1 << row);
+        if (PORTBbits.RB4 == 1)
+            return (row==0)?'A':(row==1)?'3':(row==2)?'2':'1';
+        if (PORTBbits.RB5 == 1)
+            return (row==0)?'B':(row==1)?'6':(row==2)?'5':'4';
+        if (PORTBbits.RB6 == 1)
+            return (row==0)?'C':(row==1)?'9':(row==2)?'8':'7';
+        if (PORTBbits.RB7 == 1)
+            return (row==0)?'D':(row==1)?'#':(row==2)?'0':'*';
+    }
+    return '\0';
+}
+
+void display_candidates() {
+    Lcd_Clear();
+    Lcd_Set_Cursor(1, 1); Lcd_Write_String("A: KGOTSO  B: NIMO");
+    Lcd_Set_Cursor(2, 1); Lcd_Write_String("C: EKIA    D: LOU");
+    __delay_ms(1500);
+    Lcd_Clear();
+}
+
+void enter_pin() {
+    Lcd_Clear();
+    Lcd_Set_Cursor(1, 1);
+    Lcd_Write_String("Enter PIN Code");
+    pinIndex = 0;
+    while (pinIndex < 5) {
+        char key = read_keypad();
+        if (key >= '0' && key <= '9') {
+            enteredPin[pinIndex] = key;
+            pinIndex++;
+            Lcd_Set_Cursor(2, pinIndex);
+            Lcd_Write_String("*");
+        }
+        __delay_ms(200);
+    }
+}
+
+void blink_led() {
+    for (int i = 0; i < 3; i++) {
+        PORTAbits.RA0 = 1; __delay_ms(500);
+        PORTAbits.RA0 = 0; __delay_ms(500);
+    }
+}
+
+void welcome_message() {
+    Lcd_Clear();
+    Lcd_Set_Cursor(1, 1);
+    Lcd_Write_String(" VOTING SYSTEM ");
+    __delay_ms(3000);
+}
+
+void wait_for_restart() {
+    Lcd_Clear();
+    Lcd_Set_Cursor(1, 1); Lcd_Write_String("Press 1 to");
+    Lcd_Set_Cursor(2, 1); Lcd_Write_String("Restart Voting");
+    while (1) {
+        char key = read_keypad();
+        if (key == '1') { welcome_message(); break; }
+        __delay_ms(200);
+    }
+}
+
+void main(void) {
+    TRISA = 0x00; TRISB = 0xF0; TRISD = 0x00; TRISC = 0x00;
+    PORTA = 0x00; PORTB = 0x00; PORTC = 0x00;
+
+    blink_led();
+    PORTAbits.RA0 = 1;
+    Lcd_Init();
+    welcome_message();
+
+    while (1) {
+        int pinCorrect = 0;
+        while (!pinCorrect) {
+            enter_pin();
+            if (memcmp(enteredPin, correctPin, 5) == 0) {
+                Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                Lcd_Write_String("WELCOME");
+                __delay_ms(1000);
+                pinCorrect = 1;
+            } else {
+                Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                Lcd_Write_String("INVALID PIN");
+                __delay_ms(1000);
+            }
+            memset(enteredPin, 0, 5);
+            pinIndex = 0;
+        }
+
+        while (1) {
+            display_candidates();
+            Lcd_Clear();
+            Lcd_Set_Cursor(1,1); Lcd_Write_String("Vote: ");
+            Lcd_Set_Cursor(2,1); Lcd_Write_String("A-D to select");
+
+            while (1) {
+                char key = read_keypad();
+                if (key=='A'||key=='B'||key=='C'||key=='D') {
+                    selectedCandidate = key;
+                    Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                    char message[16];
+                    sprintf(message, "Vote: %c", selectedCandidate);
+                    Lcd_Write_String(message);
+                    Lcd_Set_Cursor(2,1);
+                    Lcd_Write_String("# to confirm");
+                } else if (key == '#') {
+                    if (selectedCandidate != '\0') {
+                        if      (selectedCandidate=='A') ttlVotesOf_A++;
+                        else if (selectedCandidate=='B') ttlVotesOf_B++;
+                        else if (selectedCandidate=='C') ttlVotesOf_C++;
+                        else if (selectedCandidate=='D') ttlVotesOf_D++;
+                        Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                        Lcd_Write_String("Thanks for Vote!");
+                        PORTCbits.RC2 = 1; __delay_ms(2000);
+                        PORTCbits.RC2 = 0;
+                        wait_for_restart();
+                        break;
+                    } else {
+                        Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                        Lcd_Write_String("Invalid Response");
+                        __delay_ms(1000); break;
+                    }
+                } else if (key == '*') {
+                    Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                    Lcd_Write_String("Enter Vote PIN");
+                    enter_pin();
+                    if (memcmp(enteredPin, correctPin, 5) == 0) {
+                        Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                        sprintf(votes, "A:%d B:%d C:%d D:%d",
+                            ttlVotesOf_A, ttlVotesOf_B,
+                            ttlVotesOf_C, ttlVotesOf_D);
+                        Lcd_Write_String(votes);
+                        __delay_ms(5000);
+                        wait_for_restart(); break;
+                    } else {
+                        Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                        Lcd_Write_String("Invalid PIN");
+                        __delay_ms(1000); break;
+                    }
+                    memset(enteredPin, 0, 5);
+                    pinIndex = 0;
+                } else if (key != '\0') {
+                    Lcd_Clear(); Lcd_Set_Cursor(1,1);
+                    Lcd_Write_String("Invalid Response");
+                    __delay_ms(1000); break;
+                }
+                __delay_ms(200);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\end{document}

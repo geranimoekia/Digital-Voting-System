@@ -65,6 +65,8 @@
 \titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
 \titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
 
+\graphicspath{{images/}}
+
 \begin{document}
 
 %--------------------------------------------------------------
@@ -73,6 +75,7 @@
 \begin{titlepage}
     \centering
     \vspace*{1cm}
+    \includegraphics[width=0.45\textwidth]{fig00_biust_logo.png}\\[1cm]
     {\LARGE\bfseries BOTSWANA INTERNATIONAL UNIVERSITY\\OF SCIENCE \& TECHNOLOGY\par}
     \vspace{1.5cm}
     \rule{\linewidth}{0.5pt}\\[0.4cm]
@@ -187,6 +190,13 @@ The PIC16F877A contains 368 bytes of RAM and 256 bytes of EEPROM for non-volatil
 It provides 33 I/O pins configurable for digital/analogue input, PWM output, or serial
 communication \cite{microchip}.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{fig01_pic16f877a_pinout.png}
+    \caption{PIC16F877A Pinout Diagram}
+    \label{fig:pinout}
+\end{figure}
+
 \subsubsection{I/O Port Descriptions}
 
 \begin{itemize}
@@ -220,6 +230,13 @@ variants offer an I\textsuperscript{2}C interface that reduces pin count \cite{r
     \item \textbf{Backlight Pins (optional):} Control the backlight.
 \end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{fig02_lcd16x2_pinout.jpeg}
+    \caption{LCD 16$\times$2 Pinout Diagram}
+    \label{fig:lcd-pinout}
+\end{figure}
+
 The LCD operates using two registers:
 \begin{itemize}
     \item \textbf{Command Register:} Stores instructions to control LCD behaviour (clear screen, cursor positioning, initialisation).
@@ -245,6 +262,13 @@ The LCD operates using two registers:
 
 A 4$\times$4 keypad is a matrix-based input device consisting of 16 buttons arranged in 4 rows and
 4 columns. The 4$\times$4 keypad has $4 + 4 = 8$ pins \cite{elektronicavoorjou, lastminuteengineers}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{fig03_matrix_keypad_internal.png}
+    \caption{Internal Structure of the 4$\times$4 Matrix Keypad}
+    \label{fig:keypad}
+\end{figure}
 
 \subsubsection{Keypad Scanning}
 
@@ -392,6 +416,20 @@ Start
 End
 \end{lstlisting}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig04_voting_system_flowchart.png}
+    \caption{Flowchart of the Digital Voting System}
+    \label{fig:flowchart}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig05_simulation_diagram.jpeg}
+    \caption{Proteus Simulation Diagram of the Voting System}
+    \label{fig:simulation}
+\end{figure}
+
 %--------------------------------------------------------------
 % RESULTS AND ANALYSIS
 %--------------------------------------------------------------
@@ -403,10 +441,42 @@ Upon connecting the PIC16F877A to a power source, the \textbf{RED LED} blinks 3 
 indicate system start-up. The LCD displays \textit{``Enter PIN Code''} and the RED LED remains
 on for the duration of system operation.
 
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig07_initial_state_simulation.png}
+        \caption{Initial State -- Simulation}
+        \label{fig:init-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig07-1_initial_state_hardware.jpeg}
+        \caption{Initial State -- Hardware}
+        \label{fig:init-hw}
+    \end{minipage}
+\end{figure}
+
 \subsection{Invalid PIN Entry}
 
 When an incorrect PIN is entered, the LCD displays \textit{``INVALID PIN''} and prompts the
 user to re-enter their PIN. The voting process does not proceed until a valid PIN is provided.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig08_invalid_pin_simulation.png}
+        \caption{Invalid PIN -- Simulation}
+        \label{fig:invalidpin-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig08-1_invalid_pin_hardware.jpeg}
+        \caption{Invalid PIN -- Hardware}
+        \label{fig:invalidpin-hw}
+    \end{minipage}
+\end{figure}
 
 \subsection{Valid PIN Entry}
 
@@ -418,16 +488,71 @@ election candidates:
     \texttt{C: EKIA \quad\quad D: LOU}
 \end{center}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\textwidth]{fig09_valid_pin_simulation.png}
+    \caption{Valid PIN Entry -- Candidates Displayed (Simulation)}
+    \label{fig:validpin-sim}
+\end{figure}
+
 \subsection{Vote Input}
 
 The LCD prompts \textit{``Vote: / A--D to select''}. The voter presses the key corresponding
 to their preferred candidate (A, B, C, or D).
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig10_waiting_vote_simulation.png}
+        \caption{Waiting for Vote -- Simulation}
+        \label{fig:waitvote-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig10-1_waiting_vote_hardware.jpeg}
+        \caption{Waiting for Vote -- Hardware}
+        \label{fig:waitvote-hw}
+    \end{minipage}
+\end{figure}
 
 \subsection{Vote Confirmation}
 
 After a candidate is selected, the LCD displays \textit{``Vote: [X] / \# to confirm''}. Pressing
 \texttt{\#} confirms and records the vote. The \textbf{GREEN LED} blinks to acknowledge a
 successful vote, and the LCD displays \textit{``Thanks for Vote!''}.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig11_confirming_vote_simulation.png}
+        \caption{Vote Confirmation Prompt -- Simulation}
+        \label{fig:confirm-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig11-1_confirming_vote_hardware.jpeg}
+        \caption{Vote Confirmation Prompt -- Hardware}
+        \label{fig:confirm-hw}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig12_confirming_vote2_simulation.png}
+        \caption{Vote Confirmed -- Simulation}
+        \label{fig:confirmed-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig12-1_confirming_vote2_hardware.jpeg}
+        \caption{Vote Confirmed (Green LED) -- Hardware}
+        \label{fig:confirmed-hw}
+    \end{minipage}
+\end{figure}
 
 \subsection{Displaying Vote Statistics}
 
@@ -437,6 +562,22 @@ vote tally is displayed:
 \begin{center}
     \texttt{A:n \quad B:n \quad C:n \quad D:n}
 \end{center}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig15_voting_statistics_simulation.png}
+        \caption{Vote Tally Display -- Simulation}
+        \label{fig:stats-sim}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig15-1_voting_statistics_hardware.jpeg}
+        \caption{Vote Tally Display -- Hardware}
+        \label{fig:stats-hw}
+    \end{minipage}
+\end{figure}
 
 An invalid PIN at this stage returns \textit{``Invalid PIN''} and exits.
 

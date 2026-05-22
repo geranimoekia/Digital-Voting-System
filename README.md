@@ -1,14 +1,6 @@
 # Digital Voting System
 
-**Module:** CTEN 415 — Microcontrollers  
-**Institution:** Botswana International University of Science and Technology (BIUST)  
-**Department:** Electrical, Computer and Telecommunications Engineering  
-**Instructor:** Jwaone Gababoitaolelwe
-
-| Name | Student ID | Programme |
-|---|---|---|
-| Tsotlhe Seiphepi | 21001137 | BEng Computer and Telecommunications |
-| Kgotso Mathangwane | 21000459 | BEng Electrical and Electronics |
+**Module:** CTEN 415 — Microcontrollers
 
 ---
 

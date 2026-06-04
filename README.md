@@ -2,7 +2,6 @@
 
 **Module:** CTEN 415 — Microcontrollers
 
----
 
 ## Tech Stack
 
@@ -18,6 +17,9 @@
 | **MPLAB X IDE** | Development environment |
 | **Proteus 8** | Hardware simulation |
 | **LaTeX** | Project report |
+
+---
+
 
 ## Overview
 

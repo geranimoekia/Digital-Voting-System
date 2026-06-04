@@ -1,4 +1,11 @@
+![Banner](https://capsule-render.vercel.app/api?type=waving&color=0:CB2D3E,100:EF473A&height=200&section=header&text=Digital+Voting+System&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=PIC16F877A+%C2%B7+MPLAB+X+%C2%B7+Proteus+8&descAlignY=56&descAlign=50)
+
 # Digital Voting System
+
+> A PIN-protected digital voting system on a PIC16F877A microcontroller — 4×4 keypad, 20×4 LCD display, LED feedback, and a hidden admin tally view. Simulated in Proteus, compiled with XC8.
+
+![Last Commit](https://img.shields.io/github/last-commit/geranimoekia/Digital-Voting-System?style=for-the-badge&color=0e75b6)
+![License](https://img.shields.io/github/license/geranimoekia/Digital-Voting-System?style=for-the-badge&color=brightgreen)
 
 **Module:** CTEN 415 — Microcontrollers
 

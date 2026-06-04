@@ -4,6 +4,21 @@
 
 ---
 
+## Tech Stack
+
+![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
+![Microchip](https://img.shields.io/badge/PIC16F877A-EE3124?style=for-the-badge&logo=microchip&logoColor=white)
+![MPLAB X](https://img.shields.io/badge/MPLAB_X_IDE-EE3124?style=for-the-badge&logo=microchip&logoColor=white)
+![Proteus](https://img.shields.io/badge/Proteus_8-00A99D?style=for-the-badge&logo=protel&logoColor=white)
+![LaTeX](https://img.shields.io/badge/LaTeX-008080?style=for-the-badge&logo=latex&logoColor=white)
+
+| Tool | Purpose |
+|---|---|
+| **C / XC8 Compiler** | Firmware for PIC16F877A |
+| **MPLAB X IDE** | Development environment |
+| **Proteus 8** | Hardware simulation |
+| **LaTeX** | Project report |
+
 ## Overview
 
 A PIN-protected digital voting system implemented on a **PIC16F877A** microcontroller. Voters select candidates via a **4×4 matrix keypad** and results are displayed on a **20×4 LCD**. LED indicators provide visual feedback at startup and vote confirmation.

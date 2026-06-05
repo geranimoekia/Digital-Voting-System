@@ -2,12 +2,12 @@
 
 # Digital Voting System
 
-> A PIN-protected digital voting system on a PIC16F877A microcontroller — 4×4 keypad, 20×4 LCD display, LED feedback, and a hidden admin tally view. Simulated in Proteus, compiled with XC8.
+> A PIN-protected digital voting system on a PIC16F877A microcontroller - 4×4 keypad, 20×4 LCD display, LED feedback, and a hidden admin tally view. Simulated in Proteus, compiled with XC8.
 
 ![Last Commit](https://img.shields.io/github/last-commit/geranimoekia/Digital-Voting-System?style=for-the-badge&color=0e75b6)
 ![License](https://img.shields.io/github/license/geranimoekia/Digital-Voting-System?style=for-the-badge&color=brightgreen)
 
-**Module:** CTEN 415 — Microcontrollers
+**Module:** CTEN 415 - Microcontrollers
 
 
 ## Tech Stack
@@ -110,7 +110,7 @@ A PIN-protected digital voting system implemented on a **PIC16F877A** microcontr
 2. Select **XC8** as the compiler.
 3. Add `lcd.h` to **Header Files** and `D_VOTING SYSTEM.c` to **Source Files**.
 4. Set Configuration Bits: `FOSC = HS`, all protection/watchdog bits `OFF`.
-5. **Clean and Build** — this generates `HS.hex` in the output directory.
+5. **Clean and Build** - this generates `HS.hex` in the output directory.
 
 ### Simulation (Proteus)
 
@@ -174,7 +174,7 @@ Record vote ──► Green LED blinks ──► "Thanks for Vote!"
 
 ## Key Design Notes
 
-- **47 kΩ pull-down resistors** on all keypad pins (not just rows) were necessary to suppress noise at 8 MHz operation. Prolonged power caused pin charging, leading to false key detections — grounding all pins solved this.
+- **47 kΩ pull-down resistors** on all keypad pins (not just rows) were necessary to suppress noise at 8 MHz operation. Prolonged power caused pin charging, leading to false key detections - grounding all pins solved this.
 - Oscillator mode **HS** is required for the external 8 MHz crystal.
 - Vote counts are stored in RAM only; a power cycle resets all counts. Future work: EEPROM persistence.
 

@@ -1,4 +1,4 @@
-![Banner](https://capsule-render.vercel.app/api?type=waving&color=0:CB2D3E,100:EF473A&height=200&section=header&text=Digital+Voting+System&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=PIC16F877A+%C2%B7+MPLAB+X+%C2%B7+Proteus+8&descAlignY=56&descAlign=50)
+![Banner](https://capsule-render.vercel.app/api?type=waving&color=0:CB2D3E,100:EF473A&height=200&text=Digital+Voting+System&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=PIC16F877A+%C2%B7+MPLAB+X+%C2%B7+Proteus+8&descAlignY=56&descAlign=50)
 
 # Digital Voting System
 
